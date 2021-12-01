@@ -8,19 +8,19 @@ import kidbright as kb
 
 
 
-def time_in_range(start, end, x):
-    """Return true if x is in the range [start, end]"""
+def time_in_range(start, end, time_now):
+    """Return true if time_now is in the range [start, end]"""
     if start <= end:
-        return start <= x <= end
+        return start <= time_now <= end
     else:
-        return start <= x or x <= end
+        return start <= time_now or time_now <= end
 
-
+    
 # Initialize
 red_led = Pin(2, Pin.OUT)
 green_led = Pin(12, Pin.OUT)
-start = 18
-end = 5
+time_start = 18
+time_end = 5
 kb.init()
 # Connect to the wifi
 wlan = network.WLAN(network.STA_IF)
@@ -43,13 +43,9 @@ while True:
     result = time.localtime()
     time_now = str(result[3]) + ":" + str(result[4]) + ":"+ str(result[5])
 
-    if time_in_range(start,end,result[3]):
+    if time_in_range(time_start,time_end,result[3]):
         print(time_now)
-        print(result[3])
-        print(result[4])
-        print(result[5])
         data = {
-            'deviceId': 01,
             'light': kb.light(),
             'lat': 100.20,
             'lon':103.23
